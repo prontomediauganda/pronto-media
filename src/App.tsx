@@ -8,7 +8,7 @@ import {
   useLocation,
   useParams,
 } from 'react-router-dom'
-import { ArrowUp, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 import AdminArticles from './pages/AdminArticles'
 import AdminDashboard from './pages/AdminDashboard'
@@ -76,26 +76,26 @@ function Header({ home = false }: { home?: boolean }) {
           <span>Support</span> <strong>Pronto</strong>
         </a>
 
+        <Link
+          to="/"
+          className="header-logo"
+          aria-label="Pronto Media home"
+        >
+          <img src="/pronto-logo.png" alt="Pronto Media" />
+        </Link>
+
         <a href="mailto:news@prontomedia.com" className="top-link">
           <span>Report News</span> <strong>Pronto</strong>
         </a>
       </header>
 
-      <section className={`branding ${home ? 'home-branding' : 'compact-branding'}`}>
-        <Link to="/" aria-label="Pronto Media home">
-          <img
-            src="/pronto-logo.png"
-            alt="Pronto Media"
-            className="brand-logo"
-          />
-        </Link>
-
-        {home && (
+      {home && (
+        <section className="home-tagline">
           <h1 className="tagline">
             Fast<span>.</span> Factual<span>.</span> Relevant<span>.</span>
           </h1>
-        )}
-      </section>
+        </section>
+      )}
 
       <div className="mobile-menu-bar">
         <span>Sections</span>
@@ -409,7 +409,6 @@ function Footer() {
         className="back-to-top"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
-        <ArrowUp size={14} />
         Back to the top
       </button>
 
@@ -428,11 +427,24 @@ function Footer() {
                 title={social.name}
                 className="social-icon"
               >
-                <img
-                  src={`https://cdn.simpleicons.org/${social.icon}/252960`}
-                  alt=""
-                  loading="lazy"
-                />
+                {social.name === 'LinkedIn' ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="35"
+                    height="35"
+                    viewBox="0 0 24 24"
+                    fill="#252960"
+                    aria-hidden="true"
+                  >
+                    <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM8.34 18H5.67V9.4h2.67ZM7 8.22a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1ZM18.33 18h-2.66v-4.18c0-1-.02-2.28-1.39-2.28-1.4 0-1.61 1.09-1.61 2.21V18H10V9.4h2.56v1.17h.04a2.8 2.8 0 0 1 2.52-1.38c2.7 0 3.21 1.78 3.21 4.1Z" />
+                  </svg>
+                ) : (
+                  <img
+                    src={`https://cdn.simpleicons.org/${social.icon}/252960`}
+                    alt=""
+                    loading="lazy"
+                  />
+                )}
               </a>
             ))}
           </div>
