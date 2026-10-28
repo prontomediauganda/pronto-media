@@ -341,11 +341,25 @@ function ArticlePage() {
                 <p>{paragraph}</p>
 
                 {index === 0 && article.images[0] && (
-                  <img
-                    src={article.images[0]}
-                    alt={article.title}
-                    className="article-image"
-                  />
+                  <figure className="article-image-figure">
+                    <img
+                      src={article.images[0]}
+                      alt={article.featuredImageCaption || article.title}
+                      className="article-image"
+                    />
+
+                    {article.featuredImageCaption && (
+                      <figcaption className="article-image-caption">
+                        {article.featuredImageCaption}
+                      </figcaption>
+                    )}
+
+                    {article.featuredImageCredit && (
+                      <p className="article-image-credit">
+                        Photo: {article.featuredImageCredit}
+                      </p>
+                    )}
+                  </figure>
                 )}
               </div>
             ))}
@@ -453,15 +467,12 @@ function App() {
     <BrowserRouter>
       <PublicArticlesProvider>
         <Routes>
-          {/* Public website pages */}
           <Route path="/" element={<HomePage />} />
           <Route path="/section/:sectionSlug" element={<SectionPage />} />
           <Route path="/article/:slug" element={<ArticlePage />} />
 
-          {/* Staff sign-in */}
           <Route path="/admin/login" element={<AdminLogin />} />
 
-          {/* Protected staff area */}
           <Route
             path="/admin"
             element={
@@ -489,7 +500,6 @@ function App() {
             }
           />
 
-          {/* Unknown routes return to homepage */}
           <Route path="*" element={<HomePage />} />
         </Routes>
       </PublicArticlesProvider>

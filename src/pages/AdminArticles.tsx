@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { Link } from 'react-router-dom'
@@ -48,6 +47,8 @@ type ArticleDetails = {
   content: string
   category_id: number
   featured_image: string | null
+  featured_image_caption: string | null
+  featured_image_credit: string | null
   status: string
   slug: string
 }
@@ -73,6 +74,8 @@ export default function AdminArticles() {
   const [imagePreview, setImagePreview] = useState('')
   const [existingImage, setExistingImage] = useState<string | null>(null)
   const [removeExistingImage, setRemoveExistingImage] = useState(false)
+  const [imageCaption, setImageCaption] = useState('')
+  const [imageCredit, setImageCredit] = useState('')
 
   async function loadData() {
     setLoading(true)
@@ -203,6 +206,8 @@ export default function AdminArticles() {
     setImagePreview('')
     setExistingImage(null)
     setRemoveExistingImage(false)
+    setImageCaption('')
+    setImageCredit('')
     setEditingId(null)
   }
 
@@ -228,6 +233,8 @@ export default function AdminArticles() {
           content,
           category_id,
           featured_image,
+          featured_image_caption,
+          featured_image_credit,
           status,
           slug
         `)
@@ -247,6 +254,8 @@ export default function AdminArticles() {
       setContent(article.content || '')
       setCategoryId(String(article.category_id))
       setExistingImage(article.featured_image)
+      setImageCaption(article.featured_image_caption || '')
+      setImageCredit(article.featured_image_credit || '')
       setImageFile(null)
       setImagePreview('')
       setRemoveExistingImage(false)
@@ -330,6 +339,8 @@ export default function AdminArticles() {
           content: content.trim(),
           category_id: Number(categoryId),
           featured_image: featuredImage,
+          featured_image_caption: featuredImage ? imageCaption.trim() : null,
+          featured_image_credit: featuredImage ? imageCredit.trim() : null,
           updated_at: new Date().toISOString(),
         }
 
@@ -383,6 +394,8 @@ export default function AdminArticles() {
             category_id: Number(categoryId),
             author_id: user.id,
             featured_image: featuredImage,
+            featured_image_caption: featuredImage ? imageCaption.trim() : null,
+            featured_image_credit: featuredImage ? imageCredit.trim() : null,
             status: 'draft',
           })
           .select('id')
@@ -669,7 +682,6 @@ export default function AdminArticles() {
                       type="button"
                       onClick={() => {
                         setRemoveExistingImage(true)
-                        setExistingImage(null)
                       }}
                       className="mt-2 text-sm text-red-600 hover:text-red-800 flex items-center gap-1"
                     >
@@ -696,6 +708,39 @@ export default function AdminArticles() {
                     className="hidden"
                   />
                 </label>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Image caption
+                    </label>
+                    <textarea
+                      value={imageCaption}
+                      onChange={(e) => setImageCaption(e.target.value)}
+                      rows={2}
+                      placeholder="Describe what is happening in the photograph..."
+                      className="w-full border border-slate-300 rounded-lg p-3 outline-none focus:border-[#dc7f29]"
+                    />
+                    <p className="text-xs text-slate-400 mt-1">
+                      This appears beneath the image on the article.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Photo credit
+                    </label>
+                    <input
+                      value={imageCredit}
+                      onChange={(e) => setImageCredit(e.target.value)}
+                      placeholder="e.g. Photo: John Doe / Pronto Media"
+                      className="w-full border border-slate-300 rounded-lg p-3 outline-none focus:border-[#dc7f29]"
+                    />
+                    <p className="text-xs text-slate-400 mt-1">
+                      Photographer, agency, organisation or source.
+                    </p>
+                  </div>
+                </div>
 
                 {imagePreview && (
                   <div className="mt-4 relative max-w-md">

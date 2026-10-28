@@ -12,6 +12,8 @@ export type Article = {
   publishedAt: string
   paragraphs: string[]
   images: string[]
+  featuredImageCaption: string
+  featuredImageCredit: string
 }
 
 type PublicArticlesContextType = {
@@ -46,6 +48,8 @@ export function PublicArticlesProvider({
           slug,
           content,
           featured_image,
+          featured_image_caption,
+          featured_image_credit,
           published_at,
           categories ( name )
         `)
@@ -77,6 +81,8 @@ export function PublicArticlesProvider({
             .map((paragraph: string) => paragraph.trim())
             .filter(Boolean),
           images: item.featured_image ? [item.featured_image] : [],
+          featuredImageCaption: item.featured_image_caption ?? '',
+          featuredImageCredit: item.featured_image_credit ?? '',
         }
       })
 
